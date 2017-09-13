@@ -1,0 +1,17 @@
+E:\C#\VanBan\VanBan\bin\Debug\VanBan.exe.config
+E:\C#\VanBan\VanBan\bin\Debug\VanBan.exe
+E:\C#\VanBan\VanBan\bin\Debug\VanBan.pdb
+E:\C#\VanBan\VanBan\obj\Debug\VanBan.csprojResolveAssemblyReference.cache
+E:\C#\VanBan\VanBan\obj\Debug\MainWindow.baml
+E:\C#\VanBan\VanBan\obj\Debug\MainWindow.g.cs
+E:\C#\VanBan\VanBan\obj\Debug\View\Document.g.cs
+E:\C#\VanBan\VanBan\obj\Debug\App.g.cs
+E:\C#\VanBan\VanBan\obj\Debug\GeneratedInternalTypeHelper.g.cs
+E:\C#\VanBan\VanBan\obj\Debug\VanBan_MarkupCompile.cache
+E:\C#\VanBan\VanBan\obj\Debug\VanBan_MarkupCompile.lref
+E:\C#\VanBan\VanBan\obj\Debug\View\Document.baml
+E:\C#\VanBan\VanBan\obj\Debug\VanBan.g.resources
+E:\C#\VanBan\VanBan\obj\Debug\VanBan.Properties.Resources.resources
+E:\C#\VanBan\VanBan\obj\Debug\VanBan.csproj.GenerateResource.Cache
+E:\C#\VanBan\VanBan\obj\Debug\VanBan.exe
+E:\C#\VanBan\VanBan\obj\Debug\VanBan.pdb
