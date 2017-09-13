@@ -15,3 +15,6 @@ E:\C#\VanBan\VanBan\obj\Debug\VanBan.Properties.Resources.resources
 E:\C#\VanBan\VanBan\obj\Debug\VanBan.csproj.GenerateResource.Cache
 E:\C#\VanBan\VanBan\obj\Debug\VanBan.exe
 E:\C#\VanBan\VanBan\obj\Debug\VanBan.pdb
+E:\C#\XuLyVanBan\VanBan\bin\Debug\VanBan.exe.config
+E:\C#\XuLyVanBan\VanBan\obj\Debug\VanBan.exe
+E:\C#\XuLyVanBan\VanBan\obj\Debug\VanBan.pdb
