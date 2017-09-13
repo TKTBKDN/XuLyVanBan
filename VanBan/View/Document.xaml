@@ -1,0 +1,55 @@
+﻿<Window x:Class="VanBan.View.Document"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="clr-namespace:VanBan.View"
+        Title="Document" Height="300" Width="300">
+    <Window.Resources>
+        <ControlTemplate x:Key="MoveThumbTemplate" TargetType="{x:Type s:MoveThumb}">
+            <Rectangle Fill="Transparent"/>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="{x:Type Control}">
+            <Grid>
+                <s:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 -4 0 0"
+                       VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                <s:ResizeThumb Width="3" Cursor="SizeWE" Margin="-4 0 0 0"
+                       VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                <s:ResizeThumb Width="3" Cursor="SizeWE" Margin="0 0 -4 0"
+                       VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                <s:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 0 0 -4"
+                       VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+                <s:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="-6 -6 0 0"
+                       VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <s:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -6 -6 0"
+                       VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                <s:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6"
+                       VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                <s:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6"
+                       VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="DesignerItemTemplate" TargetType="ContentControl">
+            <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                <s:MoveThumb Template="{StaticResource MoveThumbTemplate}" Cursor="SizeAll"/>
+                <Control Template="{StaticResource ResizeDecoratorTemplate}"/>
+                <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
+            </Grid>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+
+        <Path Data="M0,0 100,0 100,50 0,50z" Stroke="Black" StrokeThickness="2"/>
+        <Canvas>
+            <ContentControl Width="140"
+                            MinWidth="{Binding MinWidth, ElementName=txtText}"
+                            Height="159"           
+                            Canvas.Top="100"
+                            Canvas.Left="150"
+                            Template="{StaticResource DesignerItemTemplate}">
+
+                <StackPanel>
+                    <s:DocumentFramework Text="__123456__67890_34_789__"/>
+                </StackPanel>
+            </ContentControl>
+        </Canvas>
+    </Grid>
+</Window>
