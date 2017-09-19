@@ -50,7 +50,7 @@ namespace VanBan.View
         
         Point p1 = new Point(15, 6.8);
         Point p2 = new Point(25.5, 56.8);
-
+        int _canLe = 4;//1 Trái 2 phải; 3 Giua; 4 Deu
         public double tec{get;set;}
 
 
@@ -566,18 +566,125 @@ namespace VanBan.View
             drawingContext.DrawEllipse(brushc, null, p1, 2, 2);
             drawingContext.DrawEllipse(brushc, null, p2, 2, 2);
                // Pen pen = new Pen(Brushes.Black, 1);
+           
             //VẼ VĂN BẢN
+            if(_canLe==1)
             for (int i = 0; i < _listText.Count; i++)
             {
-                var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"),_listText[i].size, Brushes.Black);
-                
+                var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"),_listText[i].size, Brushes.Black);       
                 Typeface typeface = new Typeface(("Arial"));
                 double ch = xau.Baseline * _listText[i].offset * 2 / 100.0;
                 double ch1 = 0;
                 Point origin = new Point(_listText[i].x, _listText[i].y - xau.Baseline * _listText[i].offset * 2 / 100.0);
                 GlyphRun run = CreateGlyphRun(typeface, _listText[i].text, _listText[i].size, origin);
                 drawingContext.DrawGlyphRun(Brushes.Black, run);
-            } 
+            }
+            if (_canLe == 2)//Can le phai
+            {
+                double _toaDoY = 0;
+                _toaDoY=_listText[0].y;
+                int j = 0;
+                double _viTriCuoi = 0;
+                for (int i = 0; i < _listText.Count; i++)
+                {        
+                    if ((_listText[i].y > _toaDoY)||(i==_listText.Count-1))
+                    {
+                        //Gan lai toa do y
+                        _toaDoY = _listText[i].y;
+                        for (int t = j; t <= i-1; t++)
+                        {
+                            var xau = new FormattedText(_listText[t].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[t].size, Brushes.Black);
+                            Typeface typeface = new Typeface(("Arial"));
+                            Point origin = new Point(_listText[t].x+ActualWidth-_viTriCuoi , _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
+                            GlyphRun run = CreateGlyphRun(typeface, _listText[t].text, _listText[t].size, origin);
+                            drawingContext.DrawGlyphRun(Brushes.Black, run);
+                        }
+                        j = i;     
+                    }
+                    if ((_listText[i].text[0] != '_') && (_listText[i].y <= _toaDoY))
+                    {
+                        var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[i].size, Brushes.Black);
+                        _viTriCuoi = _listText[i].x + xau.WidthIncludingTrailingWhitespace;
+                    }
+                }
+            }
+            if (_canLe == 3)//Can giua
+            {
+                double _toaDoY = 0;
+                _toaDoY = _listText[0].y;
+                int j = 0;
+                double _viTriCuoi = 0;
+                for (int i = 0; i < _listText.Count; i++)
+                {
+                    if ((_listText[i].y > _toaDoY) || (i == _listText.Count - 1))
+                    {
+                        //Gan lai toa do y
+                        _toaDoY = _listText[i].y;
+                        for (int t = j; t <= i - 1; t++)
+                        {
+                            var xau = new FormattedText(_listText[t].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[t].size, Brushes.Black);
+                            Typeface typeface = new Typeface(("Arial"));
+                            Point origin = new Point(_listText[t].x + (ActualWidth - _viTriCuoi)/2.0, _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
+                            GlyphRun run = CreateGlyphRun(typeface, _listText[t].text, _listText[t].size, origin);
+                            drawingContext.DrawGlyphRun(Brushes.Black, run);
+                        }
+                        j = i;
+                    }
+                    if ((_listText[i].text[0] != '_') && (_listText[i].y <= _toaDoY))
+                    {
+                        var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[i].size, Brushes.Black);
+                        _viTriCuoi = _listText[i].x + xau.WidthIncludingTrailingWhitespace;
+                    }
+                }
+            }
+            if (_canLe == 4)//Can deu
+            {
+                double _toaDoY = 0;
+                _toaDoY = _listText[0].y;
+                int j = 0;
+                double _viTriCuoi = 0;
+                double sumWidthKT = 0;
+                for (int i = 0; i < _listText.Count; i++)
+                {
+                    if ((_listText[i].y > _toaDoY) || (i == _listText.Count - 1))
+                    {
+                        //Gan lai toa do y
+                        _toaDoY = _listText[i].y;
+                        if ((_listText[i-1].text[0] == '_') && true)
+                        {
+                            var xau = new FormattedText(_listText[i-1].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[i-1].size, Brushes.Black);
+                            sumWidthKT -= xau.WidthIncludingTrailingWhitespace;
+                        }
+                        double xChange = 0;
+                        for (int t = j; t <= i - 1; t++)
+                        {
+                            var xau = new FormattedText(_listText[t].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[t].size, Brushes.Black);
+                            Typeface typeface = new Typeface(("Arial"));
+                            if (_listText[t].text[0] == '_'&&(t!=0))
+                            {
+                                xChange += xau.WidthIncludingTrailingWhitespace*(ActualWidth - _viTriCuoi)/sumWidthKT;     
+                            }
+
+                            Point origin = new Point(_listText[t].x+xChange, _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
+                           
+                            GlyphRun run = CreateGlyphRun(typeface, _listText[t].text, _listText[t].size, origin);
+                            drawingContext.DrawGlyphRun(Brushes.Black, run);
+                        }
+                        j = i;
+                        sumWidthKT = 0;
+                    }
+                    if ((_listText[i].text[0] != '_') && (_listText[i].y <= _toaDoY))
+                    {
+                        var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[i].size, Brushes.Black);
+                        _viTriCuoi = _listText[i].x + xau.WidthIncludingTrailingWhitespace;
+                    }
+                    if ((_listText[i].text[0] == '_') && i!=0)
+                    {
+                        var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[i].size, Brushes.Black);
+                        sumWidthKT += xau.WidthIncludingTrailingWhitespace;
+                    }
+                }
+            }
         }
        
         
