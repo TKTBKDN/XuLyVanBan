@@ -39,7 +39,7 @@
 
         <Path Data="M0,0 100,0 100,50 0,50z" Stroke="Black" StrokeThickness="2"/>
         <Canvas>
-            <ContentControl Width="110"
+            <ContentControl Width="250"
                             MinWidth="{Binding MinWidth, ElementName=txtText}"
                             Height="180"           
                             Canvas.Top="100"
@@ -47,7 +47,7 @@
                             Template="{StaticResource DesignerItemTemplate}">
 
                 <StackPanel>
-                    <s:DocumentFramework Text="__123456__67890_34_789__"/>
+                    <s:DocumentFramework Text="__123456__67890_34_789__123456789_154_1575_6547"/>
                 </StackPanel>
             </ContentControl>
         </Canvas>

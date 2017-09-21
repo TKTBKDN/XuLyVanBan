@@ -50,14 +50,16 @@ namespace VanBan.View
         
         Point p1 = new Point(15, 6.8);
         Point p2 = new Point(25.5, 56.8);
-        int _canLe = 4;//1 Trái 2 phải; 3 Giua; 4 Deu
+        int _canLe = 1;//1 Trái 2 phải; 3 Giua; 4 Deu
+        int _soCot = 1;
+        double widthCheck=0;
         public double tec{get;set;}
 
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-
+            widthCheck = ActualWidth/_soCot;
             double lineSpacing = 0;
             List<FormattedText> _listFormattedText = new List<FormattedText>();
             List<FormatText> _listFormatText = new List<FormatText>();
@@ -65,12 +67,12 @@ namespace VanBan.View
             //Khai bao toa do boi den.
             tec += 2;
             List<ItemFormatText> listFont = new List<ItemFormatText>();
-            listFont.Add(new ItemFormatText { viTriKetThuc = 8, _fontSize = 10, _fontType = "Arial",_offset=0 });
-            listFont.Add(new ItemFormatText { viTriKetThuc = 11, _fontSize = 20, _fontType = "Arial", _offset = 0 });
-            listFont.Add(new ItemFormatText { viTriKetThuc = 12, _fontSize = 20, _fontType = "Arial", _offset = 0 });
-            listFont.Add(new ItemFormatText { viTriKetThuc = 13, _fontSize = 20, _fontType = "Arial", _offset = 50 });
-            listFont.Add(new ItemFormatText { viTriKetThuc = 16, _fontSize = 18, _fontType = "Arial", _offset = 0 });
-            listFont.Add(new ItemFormatText { viTriKetThuc = 32, _fontSize = 22, _fontType = "Arial", _offset = 0 });
+            listFont.Add(new ItemFormatText { viTriKetThuc = 8, _fontSize = 10, _fontType = "Arial",_offset=0, _line=1 });
+            listFont.Add(new ItemFormatText { viTriKetThuc = 11, _fontSize = 20, _fontType = "Arial", _offset = 0, _line = 2 });
+            listFont.Add(new ItemFormatText { viTriKetThuc = 12, _fontSize = 20, _fontType = "Arial", _offset = 0, _line=1 });
+            listFont.Add(new ItemFormatText { viTriKetThuc = 13, _fontSize = 20, _fontType = "Arial", _offset = 50, _line=0});
+            listFont.Add(new ItemFormatText { viTriKetThuc = 16, _fontSize = 18, _fontType = "Arial", _offset = 0, _line = 0 });
+            listFont.Add(new ItemFormatText { viTriKetThuc = 32, _fontSize = 22, _fontType = "Arial", _offset = 0, _line=0 });
             List<ItemText> listText = new List<ItemText>();
             listText.Add(new ItemText { _text = "___123", _fontSize = 10, _fontType = "Arial" });
             listText.Add(new ItemText { _text = "__4567", _fontSize = 30, _fontType = "Arial" });
@@ -144,7 +146,7 @@ namespace VanBan.View
               // sumWidth += widthXau(item.Tu, listFont[positionFontTu]);
                check = widthXau(item.Tu, listFont[positionFontTu]) -widthXau(listFont, item.Tu, viTriDauChuoi, viTriCuoiChuoi);
                  sumWidth += widthXau(listFont, item.Tu, viTriDauChuoi, viTriCuoiChuoi);
-               if(sumWidth>ActualWidth)
+                 if (sumWidth > widthCheck)
                {
                    //Vẽ hàng
                     x = 0;
@@ -163,7 +165,9 @@ namespace VanBan.View
                            y = maxBaseline + _height + lineSpacing,
                            maxBaseline = maxBaseline,
                            x = x,
-                           offset=_listFormatText[j].offset
+                           offset=_listFormatText[j].offset,
+                           line=_listFormatText[j].line
+                           
                        });
                       // drawingContext.DrawText(_listFormattedText[j], new Point(x, maxBaseline - _listFormattedText[j].Baseline+_height+lineSpacing));
                        x += _listFormattedText[j].WidthIncludingTrailingWhitespace;
@@ -206,7 +210,7 @@ namespace VanBan.View
                            sumWidth = KT.WidthIncludingTrailingWhitespace + kt.WidthIncludingTrailingWhitespace;
                        }
                    }*/
-                   if (widthXau(listFont, item.Tu, viTriDauChuoi, viTriCuoiChuoi) > ActualWidth)
+                   if (widthXau(listFont, item.Tu, viTriDauChuoi, viTriCuoiChuoi) > widthCheck)
                    {
                        maxBaseline = 0;
                        sumWidth = 0;
@@ -218,12 +222,10 @@ namespace VanBan.View
                            var charKiTu = new FormattedText(item.Tu[i].ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), 
                                listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._fontSize * (1 -((int)listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
 
-                           var charKiTu2 = new FormatText(item.Tu[i].ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._offset);
-
-                           
+                           var charKiTu2 = new FormatText(item.Tu[i].ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._offset,listFont[viTriDinhDang(listFont, viTriDauChuoi + i)]._line);                 
                            if (charKiTu.Baseline > maxBaseline) maxBaseline = charKiTu.Baseline;
                            sumWidth += charKiTu.WidthIncludingTrailingWhitespace;
-                           if (sumWidth > ActualWidth)
+                           if (sumWidth > widthCheck)
                            {
                                /*var tu = new FormattedText(item.Tu.Substring(vitri, i - vitri), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[positionFontTu]._fontSize, Brushes.Black);
                                vitri = i;
@@ -249,7 +251,8 @@ namespace VanBan.View
                                        y = maxBaseline + _height + lineSpacing
                                        ,
                                        maxBaseline = maxBaseline,
-                                       offset=_listFormatText[j].offset
+                                       offset=_listFormatText[j].offset,
+                                       line=_listFormatText[j].line
                                    });
                                    x += _listFormattedText[j].WidthIncludingTrailingWhitespace;
                                }
@@ -292,7 +295,7 @@ namespace VanBan.View
                            {
 
                                var charKT = new FormattedText(item.KhoangTrang[i].ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriDauKT + i)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriDauKT + i)]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                               var charKT2 = new FormatText(item.KhoangTrang[i].ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriDauKT + i)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriDauKT + i)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriDauKT + i)]._offset);
+                               var charKT2 = new FormatText(item.KhoangTrang[i].ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriDauKT + i)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriDauKT + i)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriDauKT + i)]._offset,listFont[viTriDinhDang(listFont, viTriDauKT + i)]._line);
                               // if (charKT.Baseline > maxBaseline) maxBaseline = charKT.Baseline;
                                sumWidth += charKT.WidthIncludingTrailingWhitespace;
                                _listFormattedText.Add(charKT);
@@ -318,7 +321,7 @@ namespace VanBan.View
                            var xau = new FormattedText(item.Tu.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauChuoi - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize*(1 -
                                ((int)listFont[i]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
                            var xau21 = new FormatText(item.Tu.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauChuoi - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 -
-                               ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset);
+                               ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset,listFont[i]._line);
                            toaDo = listFont[i].viTriKetThuc - viTriDauChuoi + 1;
                            if (xau.Baseline > maxBaseline) maxBaseline = xau.Baseline;
                            sumWidth += xau.WidthIncludingTrailingWhitespace;
@@ -328,7 +331,7 @@ namespace VanBan.View
                        if (item.Tu.Length > 0)
                        {
                            var xau2 = new FormattedText(item.Tu.Substring(toaDo, viTriCuoiChuoi - toaDo - viTriDauChuoi + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                           var xau22 = new FormatText(item.Tu.Substring(toaDo, viTriCuoiChuoi - toaDo - viTriDauChuoi + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset);
+                           var xau22 = new FormatText(item.Tu.Substring(toaDo, viTriCuoiChuoi - toaDo - viTriDauChuoi + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset, listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._line);
                            if (xau2.Baseline > maxBaseline) maxBaseline = xau2.Baseline;
                            sumWidth += xau2.WidthIncludingTrailingWhitespace;
                            _listFormattedText.Add(xau2);
@@ -344,7 +347,7 @@ namespace VanBan.View
                            {
                                string t = item.KhoangTrang;
                                var kt = new FormattedText(item.KhoangTrang.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauKT - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                               var kt21 = new FormatText(item.KhoangTrang.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauKT - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset);
+                               var kt21 = new FormatText(item.KhoangTrang.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauKT - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset,listFont[i]._line);
                                toaDo = listFont[i].viTriKetThuc - viTriDauKT + 1;
                                _listFormattedText.Add(kt);
                                _listFormatText.Add(kt21);
@@ -353,7 +356,7 @@ namespace VanBan.View
                            if (item.KhoangTrang.Length > 0)
                            {
                                var kt2 = new FormattedText(item.KhoangTrang.Substring(toaDo, viTriCuoiKT - toaDo - viTriDauKT + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiKT)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                               var kt22 = new FormatText(item.KhoangTrang.Substring(toaDo, viTriCuoiKT - toaDo - viTriDauKT + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiKT)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset);
+                               var kt22 = new FormatText(item.KhoangTrang.Substring(toaDo, viTriCuoiKT - toaDo - viTriDauKT + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiKT)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset,listFont[viTriDinhDang(listFont, viTriCuoiKT)]._line);
                                _listFormattedText.Add(kt2);
                                _listFormatText.Add(kt22);
                                sumWidth += kt2.WidthIncludingTrailingWhitespace;
@@ -382,7 +385,7 @@ namespace VanBan.View
                        ch = listFont[i]._offset != 0 ? 1 : 0;
 
                        var xau = new FormattedText(item.Tu.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauChuoi - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                       var xau21 = new FormatText(item.Tu.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauChuoi - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset);
+                       var xau21 = new FormatText(item.Tu.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauChuoi - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset,listFont[i]._line);
                        toaDo = listFont[i].viTriKetThuc - viTriDauChuoi + 1;
                        if (xau.Baseline > maxBaseline) maxBaseline = xau.Baseline;
                        _listFormattedText.Add(xau);
@@ -392,7 +395,7 @@ namespace VanBan.View
                    if (item.Tu.Length > 0)
                    {
                        var xau2 = new FormattedText(item.Tu.Substring(toaDo, viTriCuoiChuoi - toaDo - viTriDauChuoi + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                       var xau22 = new FormatText(item.Tu.Substring(toaDo, viTriCuoiChuoi - toaDo - viTriDauChuoi + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset);
+                       var xau22 = new FormatText(item.Tu.Substring(toaDo, viTriCuoiChuoi - toaDo - viTriDauChuoi + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._offset,listFont[viTriDinhDang(listFont, viTriCuoiChuoi)]._line);
                        if (xau2.Baseline > maxBaseline) maxBaseline = xau2.Baseline;
                        _listFormattedText.Add(xau2);
                        _listFormatText.Add(xau22);
@@ -407,7 +410,7 @@ namespace VanBan.View
                         {
                             string t = item.KhoangTrang;
                             var kt = new FormattedText(item.KhoangTrang.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauKT - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                            var kt21 = new FormatText(item.KhoangTrang.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauKT - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset);
+                            var kt21 = new FormatText(item.KhoangTrang.Substring(toaDo, listFont[i].viTriKetThuc - viTriDauKT - toaDo + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[i]._fontSize * (1 - ((int)listFont[i]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[i]._offset,listFont[i]._line);
                             toaDo = listFont[i].viTriKetThuc - viTriDauKT + 1;
                             _listFormattedText.Add(kt);
                             _listFormatText.Add(kt21);
@@ -416,7 +419,7 @@ namespace VanBan.View
                         if (item.KhoangTrang.Length > 0)
                         {
                             var kt2 = new FormattedText(item.KhoangTrang.Substring(toaDo, viTriCuoiKT - toaDo - viTriDauKT + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiKT)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset!= 0 ? 1 : 0) / 3.0), Brushes.Black);
-                            var kt22 = new FormatText(item.KhoangTrang.Substring(toaDo, viTriCuoiKT - toaDo - viTriDauKT + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiKT)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset);
+                            var kt22 = new FormatText(item.KhoangTrang.Substring(toaDo, viTriCuoiKT - toaDo - viTriDauKT + 1), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), listFont[viTriDinhDang(listFont, viTriCuoiKT)]._fontSize * (1 - ((int)listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset != 0 ? 1 : 0) / 3.0), Brushes.Black, listFont[viTriDinhDang(listFont, viTriCuoiKT)]._offset,listFont[viTriDinhDang(listFont, viTriCuoiKT)]._line);
                             _listFormattedText.Add(kt2);
                             _listFormatText.Add(kt22);
                             sumWidth += kt2.WidthIncludingTrailingWhitespace;
@@ -431,7 +434,7 @@ namespace VanBan.View
                 /*Point origin = new Point(x, maxBaseline  + _height + lineSpacing);
                     GlyphRun run = CreateGlyphRun(typeface,_listFormatText[j].textToFormat, _listFormatText[j].emSize, origin);
                     drawingContext.DrawGlyphRun(Brushes.Black, run);*/
-                _listText.Add(new ListText { text = _listFormatText[j].textToFormat, size = _listFormatText[j].emSize, typeface = typeface, foreground = _listFormatText[j].foreground, x = x, y = maxBaseline + _height + lineSpacing, maxBaseline = maxBaseline, offset = _listFormatText[j].offset });
+                _listText.Add(new ListText { text = _listFormatText[j].textToFormat, size = _listFormatText[j].emSize, typeface = typeface, foreground = _listFormatText[j].foreground, x = x, y = maxBaseline + _height + lineSpacing, maxBaseline = maxBaseline, offset = _listFormatText[j].offset,line=_listFormatText[j].line });
                //drawingContext.DrawText(_listFormattedText[j], new Point(x, maxBaseline - _listFormattedText[j].Baseline + _height + lineSpacing));
                 x += _listFormattedText[j].WidthIncludingTrailingWhitespace;
             }
@@ -568,17 +571,58 @@ namespace VanBan.View
                // Pen pen = new Pen(Brushes.Black, 1);
            
             //VẼ VĂN BẢN
-            if(_canLe==1)
+            double _xChange = 0;
+            double _yChange = 0;
+            int tam = 0;
+            if (_canLe == 1)//Can le trai
+               
             for (int i = 0; i < _listText.Count; i++)
             {
+                
                 var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"),_listText[i].size, Brushes.Black);       
                 Typeface typeface = new Typeface(("Arial"));
                 double ch = xau.Baseline * _listText[i].offset * 2 / 100.0;
-                double ch1 = 0;
-                Point origin = new Point(_listText[i].x, _listText[i].y - xau.Baseline * _listText[i].offset * 2 / 100.0);
+               
+                Point origin = new Point(_listText[i].x+_xChange, _listText[i].y - xau.Baseline * _listText[i].offset * 2 / 100.0-_yChange);
                 GlyphRun run = CreateGlyphRun(typeface, _listText[i].text, _listText[i].size, origin);
-                drawingContext.DrawGlyphRun(Brushes.Black, run);
+                drawingContext.DrawGlyphRun(Brushes.Red, run);
+                if ((_listText[i].y > _listText[_listText.Count - 1].y / _soCot + _yChange) && (_listText[i].y) > _listText[tam].y)
+                {
+                    tam = i;
+                    for (int j = i+1; j < _listText.Count; j++)
+                    {
+                        if (_listText[j].y == _listText[i].y)
+                        {
+                            xau = new FormattedText(_listText[j].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[j].size, Brushes.Black);
+                            typeface = new Typeface(("Arial"));
+                            ch = xau.Baseline * _listText[j].offset * 2 / 100.0;
+
+                            origin = new Point(_listText[j].x + _xChange, _listText[j].y - xau.Baseline * _listText[j].offset * 2 / 100.0 - _yChange);
+                            run = CreateGlyphRun(typeface, _listText[j].text, _listText[j].size, origin);
+                            drawingContext.DrawGlyphRun(Brushes.Red, run);
+                        }
+                            
+                        else break;
+                        i = j;
+                    }
+                        _xChange += widthCheck;
+                    _yChange = _listText[i-1].y;
+                }
+               
             }
+           /* if (_canLe == 1)//Can le trai
+                for (int i = 0; i < _listText.Count; i++)
+                {
+
+                    var xau = new FormattedText(_listText[i].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[i].size, Brushes.Black);
+                    Typeface typeface = new Typeface(("Arial"));
+                    double ch = xau.Baseline * _listText[i].offset * 2 / 100.0;
+
+                    Point origin = new Point(_listText[i].x , _listText[i].y - xau.Baseline * _listText[i].offset * 2 / 100.0);
+                    GlyphRun run = CreateGlyphRun(typeface, _listText[i].text, _listText[i].size, origin);
+                    drawingContext.DrawGlyphRun(Brushes.Black, run);
+                   
+                }*/
             if (_canLe == 2)//Can le phai
             {
                 double _toaDoY = 0;
@@ -595,7 +639,7 @@ namespace VanBan.View
                         {
                             var xau = new FormattedText(_listText[t].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[t].size, Brushes.Black);
                             Typeface typeface = new Typeface(("Arial"));
-                            Point origin = new Point(_listText[t].x+ActualWidth-_viTriCuoi , _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
+                            Point origin = new Point(_listText[t].x + widthCheck - _viTriCuoi, _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
                             GlyphRun run = CreateGlyphRun(typeface, _listText[t].text, _listText[t].size, origin);
                             drawingContext.DrawGlyphRun(Brushes.Black, run);
                         }
@@ -624,7 +668,7 @@ namespace VanBan.View
                         {
                             var xau = new FormattedText(_listText[t].text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arial"), _listText[t].size, Brushes.Black);
                             Typeface typeface = new Typeface(("Arial"));
-                            Point origin = new Point(_listText[t].x + (ActualWidth - _viTriCuoi)/2.0, _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
+                            Point origin = new Point(_listText[t].x + (widthCheck - _viTriCuoi) / 2.0, _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
                             GlyphRun run = CreateGlyphRun(typeface, _listText[t].text, _listText[t].size, origin);
                             drawingContext.DrawGlyphRun(Brushes.Black, run);
                         }
@@ -662,7 +706,7 @@ namespace VanBan.View
                             Typeface typeface = new Typeface(("Arial"));
                             if (_listText[t].text[0] == '_'&&(t!=0))
                             {
-                                xChange += xau.WidthIncludingTrailingWhitespace*(ActualWidth - _viTriCuoi)/sumWidthKT;     
+                                xChange += xau.WidthIncludingTrailingWhitespace * (widthCheck - _viTriCuoi) / sumWidthKT;     
                             }
 
                             Point origin = new Point(_listText[t].x+xChange, _listText[t].y - xau.Baseline * _listText[t].offset * 2 / 100.0);
@@ -745,6 +789,7 @@ namespace VanBan.View
             public int _fontSize { get; set; }
             public string _fontType { get; set; }
             public double _offset { get; set; }
+            public int _line { get; set; }
 
 
         }
@@ -832,7 +877,6 @@ namespace VanBan.View
             var glyphRun = new GlyphRun(glyphTypeface, 0, false, size, glyphIndexes, origin, advanceWidths, null, null,
                                         null,
                                         null, null, null);
-
             return glyphRun;
         }
 
@@ -845,6 +889,8 @@ namespace VanBan.View
             public double emSize{get;set;}
             public Brush foreground{get;set;}
             public double offset { get; set; }
+            public int line { get; set; }
+            
            /* public FormatText(string textToFormat, CultureInfo culture, FlowDirection flowDirection, Typeface typeface, double emSize, Brush foreground)
             {
                this.textToFormat=  textToFormat;
@@ -856,7 +902,7 @@ namespace VanBan.View
 
 
             }*/
-            public FormatText(string textToFormat, CultureInfo culture, FlowDirection flowDirection, Typeface typeface, double emSize, Brush foreground,double offset)
+            public FormatText(string textToFormat, CultureInfo culture, FlowDirection flowDirection, Typeface typeface, double emSize, Brush foreground,double offset,int line)
             {
                 this.textToFormat = textToFormat;
                 this.culture = culture;
@@ -865,6 +911,7 @@ namespace VanBan.View
                 this.emSize = emSize;
                 this.foreground = foreground;
                 this.offset = offset;
+                this.line = line;
 
             }
         }
@@ -878,6 +925,7 @@ namespace VanBan.View
             public double y { get; set; }
             public double maxBaseline { get; set; }
             public double offset { get; set; }
+            public int  line { get; set; }
 
         }
          
